@@ -1,0 +1,51 @@
+{
+  "width": 544,
+  "height": 465,
+  "cx": [
+    [ "SPORT", 201 ],
+    [ "DETENIR", 303 ],
+    [ "IMAGE", 472 ],
+    [ "AVOIR2", 75 ],
+    [ "JOUER", 201 ],
+    [ "MAITRISER", 303 ],
+    [ "AVOIR", 472 ],
+    [ "EVENT", 75 ],
+    [ "CREER", 201 ],
+    [ "USER", 303 ],
+    [ "AJOUTER_EN_AMI", 472 ],
+    [ "DISCUTER", 201 ]
+  ],
+  "cy": [
+    [ "SPORT", 51 ],
+    [ "DETENIR", 51 ],
+    [ "IMAGE", 51 ],
+    [ "AVOIR2", 143 ],
+    [ "JOUER", 143 ],
+    [ "MAITRISER", 143 ],
+    [ "AVOIR", 143 ],
+    [ "EVENT", 278 ],
+    [ "CREER", 278 ],
+    [ "USER", 278 ],
+    [ "AJOUTER_EN_AMI", 278 ],
+    [ "DISCUTER", 422 ]
+  ],
+  "shift": [
+    [ "DETENIR,IMAGE,0", 0 ],
+    [ "DETENIR,SPORT,0", 0 ],
+    [ "AVOIR2,EVENT,0", 0 ],
+    [ "AVOIR2,SPORT,0", 0 ],
+    [ "JOUER,EVENT,0", 0 ],
+    [ "JOUER,USER,0", 0 ],
+    [ "MAITRISER,SPORT,0", 0 ],
+    [ "MAITRISER,USER,0", 0 ],
+    [ "AVOIR,IMAGE,0", 0 ],
+    [ "AVOIR,USER,0", 0 ],
+    [ "CREER,EVENT,0", 0 ],
+    [ "CREER,USER,0", 0 ],
+    [ "AJOUTER_EN_AMI,USER,-1_0", 0 ],
+    [ "AJOUTER_EN_AMI,USER,1_0", 0 ],
+    [ "DISCUTER,EVENT,0", 0 ],
+    [ "DISCUTER,USER,0", 0 ]
+  ],
+  "ratio": []
+}
