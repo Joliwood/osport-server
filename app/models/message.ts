@@ -40,8 +40,7 @@ export default {
           user: true,
         },
       });
-      await prisma.$disconnect();
-      // @ts-ignore
+
       const historic = result.map((message) => ({
         id: message.id,
         event_id: message.event_id,
@@ -58,6 +57,8 @@ export default {
       return historic;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
+    } finally {
+      await prisma.$disconnect();
     }
   },
   update: async (id: number, message: string) => {

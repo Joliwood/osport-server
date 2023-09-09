@@ -10,7 +10,7 @@ import canals from '../helpers/canals.js';
 const router = express.Router();
 
 const {
-  /* getHistoric, */ create, update, destroyOne, destroyMany,
+  getHistoric, create, update, destroyOne, destroyMany,
 } = messageController;
 
 router.route('/')
@@ -21,7 +21,7 @@ router.route('/:id')
   .delete(factory(destroyOne));
 
 router.route('/event/:id')
-  .get(/* getCache('chat'),    factory(getHistoric), */)
+  .get(/* getCache('chat'), */ factory(getHistoric))
   .delete(factory(destroyMany));
 
 export default router;
