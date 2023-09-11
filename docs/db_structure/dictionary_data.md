@@ -1,6 +1,7 @@
 # Database Schema Dictionary
 
-## Legend:
+## Legend
+
 - **PK**: Primary Key
 - **FK**: Foreign Key
 - **UQ**: Unique Constraint
@@ -8,6 +9,7 @@
 - **DF**: Default Value Constraint
 
 ## Table: user
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | id           | PK       | SERIAL    |              | User ID                             |
@@ -19,6 +21,7 @@
 | updatedAt    |          | TIMESTAMP |              | Last update timestamp               |
 
 ## Table: event
+
 | Field            | Required | Data Type | Constraint    | Description                          |
 |------------------|----------|-----------|---------------|--------------------------------------|
 | id               | PK       | SERIAL    |               | Event ID                             |
@@ -34,6 +37,7 @@
 | updatedAt        |          | TIMESTAMP |               | Last update timestamp                |
 
 ## Table: sport
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | id           | PK       | SERIAL    |              | Sport ID                            |
@@ -42,6 +46,7 @@
 | updatedAt    |          | TIMESTAMP |              | Last update timestamp               |
 
 ## Table: image
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | id           | PK       | SERIAL    |              | Image ID                            |
@@ -51,6 +56,7 @@
 | updatedAt    |          | TIMESTAMP |              | Last update timestamp               |
 
 ## Table: event_on_user
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | event_id     | PK, FK   | INTEGER   | FK (event)   | Event ID                            |
@@ -59,6 +65,7 @@
 | updatedAt    |          | TIMESTAMP |              | Last update timestamp               |
 
 ## Table: event_on_sport
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | event_id     | PK, FK   | INTEGER   | FK (event)   | Event ID                            |
@@ -67,6 +74,7 @@
 | updatedAt    |          | TIMESTAMP |              | Last update timestamp               |
 
 ## Table: user_on_sport
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | user_id      | PK, FK   | INTEGER   | FK (user)    | User ID                             |
@@ -75,6 +83,7 @@
 | updatedAt    |          | TIMESTAMP |              | Last update timestamp               |
 
 ## Table: sport_on_image
+
 | Field        | Required | Data Type | Constraint   | Description                         |
 |--------------|----------|-----------|--------------|-------------------------------------|
 | sport_id     | PK, FK   | INTEGER   | FK (sport)   | Sport ID                            |

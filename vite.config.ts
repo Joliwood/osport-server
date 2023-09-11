@@ -1,8 +1,8 @@
 import { UserConfig } from 'vitest';
 
 const config: UserConfig | any = {
-  // testMatch: ['**/__tests__/**/*.(ts|tsx|js|jsx)'],
-  // extensions: ['ts', 'tsx', 'js', 'jsx'],
+  // testMatch: ['**/__tests__/**/*.(ts|js)'],
+  // extensions: ['ts', 'js'],
   exclude: ['./build/**/*', './node_modules/**/*'],
 };
 

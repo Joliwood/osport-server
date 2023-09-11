@@ -7,9 +7,8 @@
   "scripts": {
     "dev": "nodemon ./index.ts --exec ts-node-transpile-only",
     "deploy": "ts-node index.ts",
-    "build": "rimraf ./build && tsc",
     "start": "node ./build/index.js",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
