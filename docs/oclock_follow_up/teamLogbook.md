@@ -112,9 +112,9 @@ Après revision des besoins/fonctionnalités :
 
 ## Jour 12 - 29/08/2023
 
--  Affichage de la liste des contacts de manière dynamique, changement en fonction du statut de la demande. Todo => Fin de la page contact (ajout amis) (Anthony)
--  Fin de user can validate event, et debut de update event. Todo => fin de l'update et debut de save event (Guillaume)
--  Aide sur le front pour la création d'un hook personnalisé, update du seed (Steeve) 
+- Affichage de la liste des contacts de manière dynamique, changement en fonction du statut de la demande. Todo => Fin de la page contact (ajout amis) (Anthony)
+- Fin de user can validate event, et debut de update event. Todo => fin de l'update et debut de save event (Guillaume)
+- Aide sur le front pour la création d'un hook personnalisé, update du seed (Steeve)
 
 ## Jour 13 - 30/08/2023
 

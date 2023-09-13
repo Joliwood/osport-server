@@ -50,12 +50,13 @@ USER_ON_FRIEND (
     status TEXT
 )
 
-<!-- Convertion : MAITRISER, 0N SPORT, 0N USER -->
+<!-- Convertion : MAITRISER, 0N SPORT, 0N USER, 01 EVENT -->
 USER_ON_SPORT (
     id INTEGER,
     user_id INTEGER,
     sport_id INTEGER,
-    rating INTEGER
+    rating INTEGER,
+    #event_id(id)
 )
 
 <!-- Convertion : DETENIR, 0N IMAGE, 1N SPORT -->

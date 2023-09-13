@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import DatabaseError from '../helpers/errors/database.error.js';
 import ServerError from '../helpers/errors/server.error.js';
 import AuthorizationError from '../helpers/errors/unauthorized.error.js';
@@ -7,8 +7,7 @@ import logger from '../helpers/logger.js';
 import NotFoundError from '../helpers/errors/notFound.error.js';
 import UserInputError from '../helpers/errors/userInput.error.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const errorHandler = (error: any, _req: Request, res: Response, _next: NextFunction) => {
+const errorHandler = (error: any, _req: Request, res: Response) => {
   if (res.app.get('env') === 'development') {
     console.log(error);
   }
@@ -48,6 +47,5 @@ const errorHandler = (error: any, _req: Request, res: Response, _next: NextFunct
   logger.error(`${unknowError + error.message}`);
   return res.status(500).send({ error: error.message });
 };
-// eslint-enable-next-line @typescript-eslint/no-unused-vars
 
 export default errorHandler;
