@@ -118,11 +118,13 @@ export default {
   },
 
   getEvents: async (req: Request, res: Response) => {
-    const id = checkParams(req.params.id);
+    const userId = checkParams(req.params.id);
     // const { cacheKey } = req.body;
 
-    const events = await EventModel.getEvents(id);
-
+    const events: any = await EventModel.getEvents(userId);
+    if (events && events.length === 0) {
+      return res.status(200).json({ message: 'The player isn\'t in any event yet', data: events });
+    }
     // await Cache.set(cacheKey, events);
 
     return res.status(200).json({ message: 'Events found', data: events });

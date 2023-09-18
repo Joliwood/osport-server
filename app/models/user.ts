@@ -59,6 +59,8 @@ export default {
         ],
       );
 
+      console.log(userFiltered);
+
       await prisma.$disconnect();
       return userFiltered;
     } catch (error: any) {
