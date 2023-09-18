@@ -1,14 +1,5 @@
 # O'Sport
 
-## Rôles du projet
-
-- **Product Owner** : Steeve Matou
-- **Git Master/Lead Back** : Guillaume Jolibois
-- **Lead Dev Front** : Thomas Gouel
-- **Project Manager** : Anthony Bourret
-
-## [Trello](https://trello.com/b/Nkp4wJJY/osport)
-
 ## Presentation du projet
 
 Une application autour du sport, réfléchie pour des matchs de foot 5v5 mais pouvant s'appliquer à d'autres sports. L'application regrouperait des utilisateurs, chaque utilisateur aurait une fiche sous forme de tableau de scores par compétences.
@@ -40,7 +31,7 @@ Tous sportifs, tous niveaux. Groupes d'amis voulant se réunir et garder un hist
 
 Dans une version 1, l'application comprendrait :
 
-- La possibilité pour l'utilisateur de s'enregistrer, modifier, supprimer ses informations de profil
+- La possibilité pour l'utilisateur de s'enregistrer, modifier ou supprimer intégralement son profil
 - Modifier sa photo de profil, son pseudo et mettre à jour son email
 - L'utilisateur doit pouvoir s'attribuer un niveau de base (débutant-intermediaire-confirmé) selon le sport
 - L'ajout d'autres utilisateurs dans une liste d'amis
@@ -65,13 +56,26 @@ Dans une version 1, l'application comprendrait :
 
 ## Technologies utilisées
 
+### Front
+
 - TypeScript
 - React
-- PostgreSQL
-- NodeJS - Express
-- Prisma
+- Node
+- Vite
 - Vitest
-- Zod
+- Tailwindcss
+- DaisyUI
+
+### Back
+
+- TypeScript
+- Prisma
+- PostgreSQL
+- Faker
+- Express
+- Node
+- Node
+- Vitest
 
 ## Arborescence de l'application
 
@@ -82,10 +86,11 @@ Dans une version 1, l'application comprendrait :
 - /
 - /login
 - /signup
-- /:username
-  - /:username/event_lists
-  - /:username/friendlist
-  - /:username/create_event
+- /contact
+- /edit_profile
+- /create_event
+- /event_list
+- /event/:id
 - /legal_mentions
 - /privacy_policy
 
@@ -119,8 +124,6 @@ Dans une version 1, l'application comprendrait :
 ### [Moqup - Desktop Version](https://app.moqups.com/cCk3iLfr4qXsS0zye6MKNCvcdlGhEQ7r/view/page/ad64222d5)
 
 ### [Moqup - Mobile Version](https://app.moqups.com/W7DPy5eEV1H5z1EvA04u3hCgxf7e6vlT/view/page/ad64222d5)
-
-### [Figma](https://www.figma.com/file/iscZuzxtxFLezgHNrOi2E1/Untitled?type=design&node-id=9-2&mode=design&t=H0gntgd6xWjKuWgj-0)
 
 ## Se repérer dans les commits
 
