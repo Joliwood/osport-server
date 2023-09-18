@@ -95,6 +95,7 @@ export default {
     await prisma.$disconnect();
     return eventUpdated;
   },
+
   getEvents: async (userId: number) => {
     const result = await prisma.$queryRaw`
         SELECT
@@ -115,10 +116,9 @@ export default {
   INNER JOIN "Event_on_user" AS participant ON participant.event_id = event.id
   INNER JOIN "Sport" AS sport ON sport.id = event.sport_id
   WHERE participant.user_id = ${userId} AND (participant.status = 'accepted' OR participant.status = 'pending')
-  ORDER BY event.date DESC  
+  ORDER BY event.date DESC
 `;
     await prisma.$disconnect();
-    if (result.length === 0) throw new UserInputError('This user has not any event yet', 'No events found');
     return result;
   },
 };
