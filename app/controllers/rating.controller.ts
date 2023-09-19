@@ -17,21 +17,23 @@ export default {
 
     res.status(201).json({ message: 'Sport rated' });
   },
+
   updateRating: async (req: Request, res: Response) => {
     const {
-      user_id, sport_id, rating, rater_id,
+      user_id, sport_id, rating, rater_id, event_id,
     } = req.body;
 
     if (rater_id === user_id) throw new UserInputError('You cannot rate yourself');
 
     await UserOnSport.updateSportRating({
-      user_id, sport_id, rating, rater_id,
+      user_id, sport_id, rating, rater_id, event_id,
     });
 
     // await Cache.del([`sport${user_id}`]);
 
-    res.status(200).json({ message: 'Rating updated' });
+    res.status(200).json({ message: 'User rated' });
   },
+
   getStartRating: async (req: Request, res: Response) => {
     const id = checkParams(req.params.id);
     // const { cacheKey } = req.body;
@@ -42,6 +44,7 @@ export default {
 
     return res.status(200).json({ message: 'User start rating', data: result ?? null });
   },
+
   getSports: async (req: Request, res: Response) => {
     const id = checkParams(req.params.id);
     // const { cacheKey } = req.body;

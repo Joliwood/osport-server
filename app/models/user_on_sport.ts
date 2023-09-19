@@ -32,25 +32,42 @@ export default {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
+
   updateSportRating: async (data: {
     user_id: number,
     sport_id: number,
     rating: number,
     rater_id: number,
+    event_id: number
   }) => {
     try {
-      // where condition bug with prisma
-      const isUpdate = await prisma.$queryRaw`
-         INSERT INTO "User_on_sport" (user_id, sport_id, rating, rater_id) 
-         VALUES (${data.user_id}, ${data.sport_id}, ${data.rating}, ${data.rater_id})
-         RETURNING "User_on_sport"."id"
-          `;
+      // conditions if the user already rated the other user in this particular event
+      const alreadyRated = await prisma.user_on_sport.findFirst({
+        where: {
+          user_id: data.user_id,
+          rater_id: data.rater_id,
+          event_id: data.event_id,
+        },
+      });
+
+      if (alreadyRated) throw new UserInputError('You already rated this user');
+
+      const isUpdate = await prisma.user_on_sport.create({
+        data: {
+          user_id: data.user_id,
+          sport_id: data.sport_id,
+          rating: data.rating,
+          rater_id: data.rater_id,
+          event_id: data.event_id,
+        },
+      });
       await prisma.$disconnect();
       return isUpdate;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
+
   getRatings: async (user_id: number) => {
     try {
       const resultFoot: any = await prisma.$queryRaw`
@@ -100,6 +117,7 @@ export default {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
+
   getRating: async (user_id: number, sport_id: number) => {
     try {
       const sportLevelResult: any = await prisma.$queryRaw`
@@ -130,6 +148,7 @@ export default {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
+
   getStartRating: async (user_id: number) => {
     const result: any = await prisma.$queryRaw`
       SELECT

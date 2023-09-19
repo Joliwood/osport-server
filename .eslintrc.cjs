@@ -25,7 +25,7 @@ module.exports = {
             selector: 'variable',
             format: ['PascalCase', 'camelCase', 'UPPER_CASE', 'snake_case'], 
           },
-        ],
+    ],
   },
 }
 
