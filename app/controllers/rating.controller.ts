@@ -7,38 +7,55 @@ import checkParams from '../utils/checkParams.js';
 
 export default {
   rate: async (req: Request, res: Response) => {
-    const { user_id, sport_id, rating: stringRating } = req.body;
+    const {
+      user_id, sport_id, rating, rater_id, event_id,
+    } = req.body;
 
-    const rating = associateStringToNumber(stringRating);
+    if (rater_id === user_id) throw new UserInputError('You cannot rate yourself');
+    if (!event_id) throw new UserInputError('An user can only be rated at the end of an event, provide an event_id');
 
-    await UserOnSport.addOwnSport(user_id, sport_id, rating);
+    await UserOnSport.addSportRating({
+      user_id, sport_id, rating, rater_id, event_id,
+    });
 
     // await Cache.del([`sport${user_id}`, `own_rating${user_id}`]);
 
     res.status(201).json({ message: 'Sport rated' });
   },
 
-  updateRating: async (req: Request, res: Response) => {
-    const {
-      user_id, sport_id, rating, rater_id, event_id,
-    } = req.body;
+  ownRate: async (req: Request, res: Response) => {
+    const { user_id, sport_id, rating: stringRating } = req.body;
 
-    if (rater_id === user_id) throw new UserInputError('You cannot rate yourself');
+    const rating = associateStringToNumber(stringRating);
 
-    await UserOnSport.updateSportRating({
-      user_id, sport_id, rating, rater_id, event_id,
-    });
+    await UserOnSport.addOwnSportRating(user_id, sport_id, rating);
 
-    // await Cache.del([`sport${user_id}`]);
+    // await Cache.del([`sport${user_id}`, `own_rating${user_id}`]);
 
-    res.status(200).json({ message: 'User rated' });
+    res.status(201).json({ message: 'Sport rated' });
   },
 
-  getStartRating: async (req: Request, res: Response) => {
+  // updateRating: async (req: Request, res: Response) => {
+  //   const {
+  //     user_id, sport_id, rating, rater_id, event_id,
+  //   } = req.body;
+
+  //   if (rater_id === user_id) throw new UserInputError('You cannot rate yourself');
+
+  //   await UserOnSport.updateSportRating({
+  //     user_id, sport_id, rating, rater_id, event_id,
+  //   });
+
+  //   // await Cache.del([`sport${user_id}`]);
+
+  //   res.status(200).json({ message: 'User rated' });
+  // },
+
+  getOwnRating: async (req: Request, res: Response) => {
     const id = checkParams(req.params.id);
     // const { cacheKey } = req.body;
 
-    const result = await UserOnSport.getStartRating(id);
+    const result = await UserOnSport.getOwnRating(id);
 
     // await Cache.set(cacheKey, result);
 

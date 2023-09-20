@@ -5,7 +5,7 @@ import type { SportLevel } from '../@types/index.js';
 
 export default {
 
-  addOwnSport: async (user_id: number, sport_id: number, rating: number) => {
+  addOwnSportRating: async (user_id: number, sport_id: number, rating: number) => {
     try {
       const isExist = await prisma.user_on_sport.findFirst({
         where: {
@@ -33,7 +33,7 @@ export default {
     }
   },
 
-  updateSportRating: async (data: {
+  addSportRating: async (data: {
     user_id: number,
     sport_id: number,
     rating: number,
@@ -50,7 +50,7 @@ export default {
         },
       });
 
-      if (alreadyRated) throw new UserInputError('You already rated this user');
+      if (alreadyRated) throw new UserInputError('You already rated this user for this event');
 
       const isUpdate = await prisma.user_on_sport.create({
         data: {
@@ -149,7 +149,7 @@ export default {
     }
   },
 
-  getStartRating: async (user_id: number) => {
+  getOwnRating: async (user_id: number) => {
     const result: any = await prisma.$queryRaw`
       SELECT
         level.rating,
