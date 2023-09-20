@@ -26,6 +26,7 @@ module.exports = {
             format: ['PascalCase', 'camelCase', 'UPPER_CASE', 'snake_case'], 
           },
     ],
+    "no-underscore-dangle": ["error", { "allow": ["_avg", "_count"] }]
   },
 }
 

@@ -54,4 +54,5 @@ type SportLevel = {
   name: string,
   gb_rating: number | null,
   user_id?: number,
+  nb_rating?: number,
 };

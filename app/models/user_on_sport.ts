@@ -70,45 +70,44 @@ export default {
 
   getRatings: async (user_id: number) => {
     try {
-      const resultFoot: any = await prisma.$queryRaw`
-    SELECT sport.name ,
-             (SUM(level.rating) + (SELECT rating
-                                   FROM (SELECT
-                                          ratee.rating,
-                                          ratee.sport_id,
-                                          ratee.user_id
-                                          FROM "User_on_sport" AS ratee
-                                          WHERE ratee.user_id = ratee.rater_id ) AS own_rating
-                                  WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = 1 ) * 5 )
-            /( COUNT(level.rating) + 5) AS gb_rating
-    FROM "User_on_sport" as level
-    INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
-    WHERE level.sport_id = 1 AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
-    GROUP BY sport.name`;
+      const footAvgRating = await prisma.user_on_sport.aggregate({
+        where: {
+          sport_id: 1,
+          user_id,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      });
 
-      const foot: SportLevel = resultFoot[0];
-
-      const resultBasket: any = await prisma.$queryRaw`
-    SELECT sport.name ,
-             (SUM(level.rating) + (SELECT rating
-                                   FROM (SELECT
-                                          ratee.rating,
-                                          ratee.sport_id,
-                                          ratee.user_id
-                                          FROM "User_on_sport" AS ratee
-                                          WHERE ratee.user_id = ratee.rater_id ) AS own_rating
-                                  WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = 2 ) * 5 )
-            /( COUNT(level.rating) + 5) AS gb_rating
-    FROM "User_on_sport" as level
-    INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
-    WHERE level.sport_id = 2 AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
-    GROUP BY sport.name`;
-
-      const basket: SportLevel = resultBasket[0];
+      const basketAvgRating = await prisma.user_on_sport.aggregate({
+        where: {
+          sport_id: 2,
+          user_id,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      });
 
       const sports: SportLevel[] = [
-        { name: foot?.name ?? 'Football', gb_rating: foot ? Number(foot.gb_rating) : null },
-        { name: basket?.name ?? 'Basketball', gb_rating: basket ? Number(basket.gb_rating) : null },
+        ...(footAvgRating._avg.rating ? [{
+          name: 'Football',
+          gb_rating: footAvgRating._avg.rating,
+          nb_rating: footAvgRating._count.rating,
+        }] : []),
+
+        ...(basketAvgRating._avg.rating ? [{
+          name: 'Basketball',
+          gb_rating: basketAvgRating._avg.rating,
+          nb_rating: basketAvgRating._count.rating,
+        }] : []),
       ];
 
       await prisma.$disconnect();
