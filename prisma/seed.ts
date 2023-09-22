@@ -159,24 +159,7 @@ async function seed() {
     rater_id: userIds[index + 5],
   }));
 
-  function allExceptOne(id: number, index: number) {
-    return index + 1 === id ? index + 2 : index + 1;
-  }
-
-  function randomRating(id: number) {
-    const dataRating = arrIteration.map((_, index) => ({
-      user_id: id,
-      sport_id: getRandomInt(1, 3),
-      rating: getRandomInt(1, 11),
-      rater_id: allExceptOne(id, index),
-    }));
-    return dataRating;
-  }
-
-  const datas = arrIteration.map((_, index) => randomRating(index + 1));
-
-  const ratingQueries = [...datas.flat(),
-  ...ownRatingFootballQueries, ...ownRatingBasketballQueries];
+  const ratingQueries = [...ownRatingFootballQueries, ...ownRatingBasketballQueries];
 
   try {
     await prisma.user_on_sport.createMany({
