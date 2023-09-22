@@ -20,8 +20,11 @@ export default {
     const status = 'accepted';
 
     const friends = await Friends.find(userId, status);
+    if (friends.length === 0) {
+      return res.status(200).json({ message: 'No friends accepted', data: friends });
+    }
 
-    res.status(200).json({ message: 'Friends retrieved successfully', data: friends });
+    return res.status(200).json({ message: 'Friends retrieved successfully', data: friends });
   },
 
   getPendingRequestReceived: async (req: Request, res: Response) => {
@@ -29,7 +32,11 @@ export default {
 
     const friends = await Friends.findManyRequest(userId);
 
-    res.status(200).json({ message: 'Friends retrieved successfully', data: friends });
+    if (friends.length === 0) {
+      return res.status(200).json({ message: 'No friends in pending', data: friends });
+    }
+
+    return res.status(200).json({ message: 'Friends retrieved successfully', data: friends });
   },
 
   sendFriendRequest: async (req: Request, res: Response) => {

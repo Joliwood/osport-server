@@ -17,8 +17,7 @@ export default {
         },
       });
       await prisma.$disconnect();
-      if (result.length === 0) throw new NotFoundError('No friends found');
-      // @ts-ignore
+      if (result.length === 0) return [];
       const data = result.map((relation) => ({
         asker_id: relation.asker_id,
         status: relation.status,
