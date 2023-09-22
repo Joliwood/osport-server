@@ -5,7 +5,7 @@ import type { SportLevel } from '../@types/index.js';
 
 export default {
 
-  addOwnSport: async (user_id: number, sport_id: number, rating: number) => {
+  addOwnSportRating: async (user_id: number, sport_id: number, rating: number) => {
     try {
       const isExist = await prisma.user_on_sport.findFirst({
         where: {
@@ -32,66 +32,82 @@ export default {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
-  updateSportRating: async (data: {
+
+  addSportRating: async (data: {
     user_id: number,
     sport_id: number,
     rating: number,
     rater_id: number,
+    event_id: number
   }) => {
     try {
-      // where condition bug with prisma
-      const isUpdate = await prisma.$queryRaw`
-         INSERT INTO "User_on_sport" (user_id, sport_id, rating, rater_id) 
-         VALUES (${data.user_id}, ${data.sport_id}, ${data.rating}, ${data.rater_id})
-         RETURNING "User_on_sport"."id"
-          `;
+      // conditions if the user already rated the other user in this particular event
+      const alreadyRated = await prisma.user_on_sport.findFirst({
+        where: {
+          user_id: data.user_id,
+          rater_id: data.rater_id,
+          event_id: data.event_id,
+        },
+      });
+
+      if (alreadyRated) throw new UserInputError('You already rated this user for this event');
+
+      const isUpdate = await prisma.user_on_sport.create({
+        data: {
+          user_id: data.user_id,
+          sport_id: data.sport_id,
+          rating: data.rating,
+          rater_id: data.rater_id,
+          event_id: data.event_id,
+        },
+      });
       await prisma.$disconnect();
       return isUpdate;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
+
   getRatings: async (user_id: number) => {
     try {
-      const resultFoot: any = await prisma.$queryRaw`
-    SELECT sport.name ,
-             (SUM(level.rating) + (SELECT rating
-                                   FROM (SELECT
-                                          ratee.rating,
-                                          ratee.sport_id,
-                                          ratee.user_id
-                                          FROM "User_on_sport" AS ratee
-                                          WHERE ratee.user_id = ratee.rater_id ) AS own_rating
-                                  WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = 1 ) * 5 )
-            /( COUNT(level.rating) + 5) AS gb_rating
-    FROM "User_on_sport" as level
-    INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
-    WHERE level.sport_id = 1 AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
-    GROUP BY sport.name`;
+      const footAvgRating = await prisma.user_on_sport.aggregate({
+        where: {
+          sport_id: 1,
+          user_id,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      });
 
-      const foot: SportLevel = resultFoot[0];
-
-      const resultBasket: any = await prisma.$queryRaw`
-    SELECT sport.name ,
-             (SUM(level.rating) + (SELECT rating
-                                   FROM (SELECT
-                                          ratee.rating,
-                                          ratee.sport_id,
-                                          ratee.user_id
-                                          FROM "User_on_sport" AS ratee
-                                          WHERE ratee.user_id = ratee.rater_id ) AS own_rating
-                                  WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = 2 ) * 5 )
-            /( COUNT(level.rating) + 5) AS gb_rating
-    FROM "User_on_sport" as level
-    INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
-    WHERE level.sport_id = 2 AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
-    GROUP BY sport.name`;
-
-      const basket: SportLevel = resultBasket[0];
+      const basketAvgRating = await prisma.user_on_sport.aggregate({
+        where: {
+          sport_id: 2,
+          user_id,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      });
 
       const sports: SportLevel[] = [
-        { name: foot?.name ?? 'Football', gb_rating: foot ? Number(foot.gb_rating) : null },
-        { name: basket?.name ?? 'Basketball', gb_rating: basket ? Number(basket.gb_rating) : null },
+        ...(footAvgRating._avg.rating ? [{
+          name: 'Football',
+          gb_rating: footAvgRating._avg.rating,
+          nb_rating: footAvgRating._count.rating,
+        }] : []),
+
+        ...(basketAvgRating._avg.rating ? [{
+          name: 'Basketball',
+          gb_rating: basketAvgRating._avg.rating,
+          nb_rating: basketAvgRating._count.rating,
+        }] : []),
       ];
 
       await prisma.$disconnect();
@@ -100,6 +116,7 @@ export default {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
+
   getRating: async (user_id: number, sport_id: number) => {
     try {
       const sportLevelResult: any = await prisma.$queryRaw`
@@ -130,7 +147,8 @@ export default {
       throw new DatabaseError(error.message, 'user_on_sport', error);
     }
   },
-  getStartRating: async (user_id: number) => {
+
+  getOwnRating: async (user_id: number) => {
     const result: any = await prisma.$queryRaw`
       SELECT
         level.rating,

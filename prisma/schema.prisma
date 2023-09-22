@@ -64,6 +64,7 @@ model Event {
   sport              Sport                @relation(fields: [sport_id], references: [id], onDelete: Cascade)
   Event_chat_on_user Event_chat_on_user[]
   event_on_user      Event_on_user[]
+  User_on_sport      User_on_sport[]
 }
 
 model Event_on_user {
@@ -99,6 +100,8 @@ model User_on_sport {
   rating     Int
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
+  event_id   Int?
+  event      Event?    @relation(fields: [event_id], references: [id], onDelete: Cascade)
   rater      User      @relation("rater", fields: [rater_id], references: [id], onDelete: Cascade)
   sport      Sport     @relation(fields: [sport_id], references: [id], onDelete: Cascade)
   user       User      @relation("ratee", fields: [user_id], references: [id], onDelete: Cascade)
