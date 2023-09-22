@@ -17,8 +17,7 @@ export default {
         },
       });
       await prisma.$disconnect();
-      if (result.length === 0) throw new NotFoundError('No friends found');
-      // @ts-ignore
+      if (result.length === 0) return [];
       const data = result.map((relation) => ({
         asker_id: relation.asker_id,
         status: relation.status,
@@ -86,7 +85,7 @@ export default {
         },
       });
       await prisma.$disconnect();
-      if (result.length === 0) throw new NotFoundError('No pending request found');
+      if (result.length === 0) return [];
       // @ts-ignore
       const data = result.map((relation) => ({
         user_id: relation.asked_id,
