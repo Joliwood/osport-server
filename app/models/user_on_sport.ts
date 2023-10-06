@@ -25,7 +25,6 @@ export default {
           rater_id: user_id,
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       if (error instanceof UserInputError) throw error;
@@ -61,7 +60,6 @@ export default {
           event_id: data.event_id,
         },
       });
-      await prisma.$disconnect();
       return isUpdate;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
@@ -110,7 +108,6 @@ export default {
         }] : []),
       ];
 
-      await prisma.$disconnect();
       return sports;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
@@ -120,20 +117,21 @@ export default {
   getRating: async (user_id: number, sport_id: number) => {
     try {
       const sportLevelResult: any = await prisma.$queryRaw`
-  SELECT sport.name ,
-           (SUM(level.rating) + (SELECT rating
-                                 FROM (SELECT
-                                        ratee.rating,
-                                        ratee.sport_id,
-                                        ratee.user_id
-                                        FROM "User_on_sport" AS ratee
-                                        WHERE ratee.user_id = ratee.rater_id ) AS own_rating
-                                WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = ${sport_id} ) * 5 )
+        SELECT sport.name ,
+          (SUM(level.rating) + (SELECT rating
+            FROM (SELECT
+              ratee.rating,
+              ratee.sport_id,
+              ratee.user_id
+              FROM "User_on_sport" AS ratee
+              WHERE ratee.user_id = ratee.rater_id ) AS own_rating
+            WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = ${sport_id} ) * 5 )
           /( COUNT(level.rating) + 5) AS gb_rating
-  FROM "User_on_sport" as level
-  INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
-  WHERE level.sport_id = ${sport_id} AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
-  GROUP BY sport.name`;
+        FROM "User_on_sport" as level
+        INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
+        WHERE level.sport_id = ${sport_id} AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
+        GROUP BY sport.name
+      `;
 
       const result: SportLevel = sportLevelResult[0];
       // need to return a default rating of 5 if no rating is found
@@ -141,7 +139,6 @@ export default {
       // this is the only role for this function in the app
       const sport = { name: sport_id === 1 ? 'Football' : 'Basketball', gb_rating: result ? Number(result.gb_rating) : 5, user_id };
 
-      await prisma.$disconnect();
       return sport;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
@@ -149,6 +146,8 @@ export default {
   },
 
   getOwnRating: async (user_id: number) => {
+    // In this context, the query Raw is faster than Prisma queries
+    // 90 to 150ms ---> 30 to 85ms
     const result: any = await prisma.$queryRaw`
       SELECT
         level.rating,
@@ -156,8 +155,8 @@ export default {
       FROM "User_on_sport" AS level
       INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
       WHERE level.rater_id = level.user_id AND level.user_id = ${user_id}
-          `;
-    await prisma.$disconnect();
+    `;
+
     if (!result) return null;
 
     return result;

@@ -6,19 +6,17 @@ import DatabaseError from '../helpers/errors/database.error.js';
 import NotFoundError from '../helpers/errors/notFound.error.js';
 
 export default {
-  // @ts-ignore
   create: async (data: Prisma.UserCreateInput) => {
     try {
       const result = await prisma.user.create({
         data,
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user', error);
     }
   },
-  // @ts-ignore
+
   findOne: async (data: Prisma.UserWhereInput) => {
     try {
       const result = await prisma.user.findFirst({
@@ -29,7 +27,6 @@ export default {
           ],
         },
       });
-      await prisma.$disconnect();
       if (!result) throw new NotFoundError('User not found');
       return result;
     } catch (error: any) {
@@ -37,6 +34,7 @@ export default {
       throw new DatabaseError(error.message, 'user', error);
     }
   },
+
   getUserInfos: async (id: number) => {
     // We find the user with the id provided by the front
     try {
@@ -59,9 +57,6 @@ export default {
         ],
       );
 
-      console.log(userFiltered);
-
-      await prisma.$disconnect();
       return userFiltered;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user', error);
@@ -85,7 +80,6 @@ export default {
           image_url: data.imageUrl || user?.image_url,
         },
       });
-      await prisma.$disconnect();
 
       return {
         id: result.id,
@@ -113,7 +107,6 @@ export default {
         id,
       },
     });
-    await prisma.$disconnect();
     return true;
   },
 };

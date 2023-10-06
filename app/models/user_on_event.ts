@@ -13,7 +13,6 @@ export default {
         },
         include: { user: true },
       });
-      await prisma.$disconnect();
       if (!userOnEvent) throw new NotFoundError('No user on event found');
       // @ts-ignore
       const data = userOnEvent.map((user) => ({
@@ -53,7 +52,6 @@ export default {
 
     try {
       const result = await Promise.allSettled(queries);
-      await prisma.$disconnect();
       return !!result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_event', error);
@@ -67,7 +65,6 @@ export default {
         },
         data: { status, team },
       });
-      await prisma.$disconnect();
       return !!result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_event', error);
@@ -82,7 +79,6 @@ export default {
           status: 'accepted',
         },
       });
-      await prisma.$disconnect();
       if (!result) throw new NotFoundError('No user on event found');
       return result;
     } catch (error: any) {

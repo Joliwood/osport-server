@@ -16,7 +16,6 @@ export default {
           asked: true,
         },
       });
-      await prisma.$disconnect();
       if (result.length === 0) return [];
       const data = result.map((relation) => ({
         asker_id: relation.asker_id,
@@ -51,7 +50,6 @@ export default {
           asker: true,
         },
       });
-      await prisma.$disconnect();
       if (!result) throw new NotFoundError('No pending request found');
 
       const data = {
@@ -84,7 +82,6 @@ export default {
           asker: true,
         },
       });
-      await prisma.$disconnect();
       if (result.length === 0) return [];
       // @ts-ignore
       const data = result.map((relation) => ({
@@ -132,7 +129,6 @@ export default {
           status: 'pending',
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_friend', error);
@@ -159,7 +155,6 @@ export default {
     });
     try {
       const result = await prisma.$transaction([firstQuery, secondeQuery]);
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_friend', error);
@@ -176,7 +171,6 @@ export default {
           },
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_friend', error);

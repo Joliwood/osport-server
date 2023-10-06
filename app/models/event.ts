@@ -24,7 +24,6 @@ export default {
         data,
       },
     );
-    await prisma.$disconnect();
     return result;
   },
 
@@ -37,7 +36,6 @@ export default {
           },
         },
       );
-      await prisma.$disconnect();
       if (!result) throw new UserInputError('This event doesn\'t exist', 'Event not found');
       return result;
     } catch (error: any) {
@@ -56,7 +54,6 @@ export default {
         },
       },
     );
-    await prisma.$disconnect();
     return eventUpdated;
   },
 
@@ -92,7 +89,6 @@ export default {
         data: eventData,
       },
     );
-    await prisma.$disconnect();
     return eventUpdated;
   },
 
@@ -118,7 +114,6 @@ export default {
   WHERE participant.user_id = ${userId} AND (participant.status = 'accepted' OR participant.status = 'pending')
   ORDER BY event.date DESC
 `;
-    await prisma.$disconnect();
     return result;
   },
 };
