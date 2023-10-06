@@ -38,7 +38,7 @@ export async function login(data: LoginForm):
 
   const expireTimeAccess = '8h';
 
-  const user = await User.findOne({ username: trimedUsername/* , password: trimedPassword */ });
+  const user = await User.findOne({ username: trimedUsername });
 
   if (!user) throw new UserInputError('Wrong credentials');
 

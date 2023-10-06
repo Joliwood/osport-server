@@ -58,8 +58,6 @@ export default {
         ],
       );
 
-      console.log(userFiltered);
-
       return userFiltered;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user', error);
