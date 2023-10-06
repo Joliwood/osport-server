@@ -33,6 +33,7 @@ export async function login(data: LoginForm):
   Promise<{ accessToken: string; }> {
   const { username, password } = data;
 
+  // We relive all useless spaces in password and username
   const trimedPassword = password.trim();
   const trimedUsername = username.trim();
 

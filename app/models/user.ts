@@ -6,7 +6,6 @@ import DatabaseError from '../helpers/errors/database.error.js';
 import NotFoundError from '../helpers/errors/notFound.error.js';
 
 export default {
-  // @ts-ignore
   create: async (data: Prisma.UserCreateInput) => {
     try {
       const result = await prisma.user.create({

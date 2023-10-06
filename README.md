@@ -74,8 +74,8 @@ Dans une version 1, l'application comprendrait :
 - Faker
 - Express
 - Node
-- Node
 - Vitest
+- Cypress
 
 ## Arborescence de l'application
 

@@ -145,6 +145,8 @@ export default {
   },
 
   getOwnRating: async (user_id: number) => {
+    // In this context, the query Raw is faster than Prisma queries
+    // 90 to 150ms ---> 30 to 85ms
     const result: any = await prisma.$queryRaw`
       SELECT
         level.rating,
@@ -152,7 +154,8 @@ export default {
       FROM "User_on_sport" AS level
       INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
       WHERE level.rater_id = level.user_id AND level.user_id = ${user_id}
-          `;
+    `;
+
     if (!result) return null;
 
     return result;
