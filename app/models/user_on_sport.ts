@@ -117,20 +117,21 @@ export default {
   getRating: async (user_id: number, sport_id: number) => {
     try {
       const sportLevelResult: any = await prisma.$queryRaw`
-  SELECT sport.name ,
-           (SUM(level.rating) + (SELECT rating
-                                 FROM (SELECT
-                                        ratee.rating,
-                                        ratee.sport_id,
-                                        ratee.user_id
-                                        FROM "User_on_sport" AS ratee
-                                        WHERE ratee.user_id = ratee.rater_id ) AS own_rating
-                                WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = ${sport_id} ) * 5 )
+        SELECT sport.name ,
+          (SUM(level.rating) + (SELECT rating
+            FROM (SELECT
+              ratee.rating,
+              ratee.sport_id,
+              ratee.user_id
+              FROM "User_on_sport" AS ratee
+              WHERE ratee.user_id = ratee.rater_id ) AS own_rating
+            WHERE own_rating.user_id = ${user_id} AND own_rating.sport_id = ${sport_id} ) * 5 )
           /( COUNT(level.rating) + 5) AS gb_rating
-  FROM "User_on_sport" as level
-  INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
-  WHERE level.sport_id = ${sport_id} AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
-  GROUP BY sport.name`;
+        FROM "User_on_sport" as level
+        INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
+        WHERE level.sport_id = ${sport_id} AND level.user_id = ${user_id} AND level.user_id <> level.rater_id
+        GROUP BY sport.name
+      `;
 
       const result: SportLevel = sportLevelResult[0];
       // need to return a default rating of 5 if no rating is found
