@@ -25,7 +25,6 @@ export default {
           rater_id: user_id,
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       if (error instanceof UserInputError) throw error;
@@ -61,7 +60,6 @@ export default {
           event_id: data.event_id,
         },
       });
-      await prisma.$disconnect();
       return isUpdate;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
@@ -110,7 +108,6 @@ export default {
         }] : []),
       ];
 
-      await prisma.$disconnect();
       return sports;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
@@ -141,7 +138,6 @@ export default {
       // this is the only role for this function in the app
       const sport = { name: sport_id === 1 ? 'Football' : 'Basketball', gb_rating: result ? Number(result.gb_rating) : 5, user_id };
 
-      await prisma.$disconnect();
       return sport;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user_on_sport', error);
@@ -157,7 +153,6 @@ export default {
       INNER JOIN "Sport" AS sport ON level.sport_id = sport.id
       WHERE level.rater_id = level.user_id AND level.user_id = ${user_id}
           `;
-    await prisma.$disconnect();
     if (!result) return null;
 
     return result;

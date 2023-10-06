@@ -10,7 +10,10 @@ import canals from '../helpers/canals.js';
 const router: Router = express.Router();
 
 const {
-  register, signin, validate, logout,
+  register,
+  signin,
+  validate,
+  logout,
 } = authController;
 
 router.route('/signup')

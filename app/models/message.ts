@@ -15,7 +15,6 @@ export default {
           message: data.message,
         },
       });
-      await prisma.$disconnect();
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
     }
@@ -25,7 +24,7 @@ export default {
       const result = await prisma.event_chat_on_user.findFirst({
         where: { id },
       });
-      await prisma.$disconnect();
+
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
@@ -57,8 +56,6 @@ export default {
       return historic;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
-    } finally {
-      await prisma.$disconnect();
     }
   },
   update: async (id: number, message: string) => {
@@ -68,7 +65,6 @@ export default {
         where: { id },
         data: { message, updated_at: today },
       });
-      await prisma.$disconnect();
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
     }
@@ -78,7 +74,6 @@ export default {
       await prisma.event_chat_on_user.delete({
         where: { id },
       });
-      await prisma.$disconnect();
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
     }
@@ -88,7 +83,6 @@ export default {
       await prisma.event_chat_on_user.deleteMany({
         where: { event_id },
       });
-      await prisma.$disconnect();
     } catch (error: any) {
       throw new DatabaseError(error.message, 'message', error);
     }

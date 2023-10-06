@@ -10,7 +10,6 @@ export default {
           title,
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'image', error);
@@ -26,7 +25,6 @@ export default {
           ],
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'image', error);
@@ -39,7 +37,6 @@ export default {
           id,
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'image', error);
@@ -56,7 +53,6 @@ export default {
           title,
         },
       });
-      await prisma.$disconnect();
       return result;
     } catch (error: any) {
       throw new DatabaseError(error.message, 'image', error);
