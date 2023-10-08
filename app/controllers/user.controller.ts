@@ -15,6 +15,7 @@ export default {
     // const { cacheKey } = req.body;
 
     const user = await UserModel.getUserInfos(id);
+    console.log(user);
 
     // await Cache.set(cacheKey, user);
 
