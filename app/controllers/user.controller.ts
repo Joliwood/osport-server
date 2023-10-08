@@ -4,7 +4,7 @@ import Image from '../models/image.js';
 import { deleteImageFromServer, saveImageOnServer } from '../service/image.js';
 import checkParams from '../utils/checkParams.js';
 import logger from '../helpers/logger.js';
-// import Cache from '../service/cache.js';
+import Cache from '../service/cache.js';
 
 export default {
 
@@ -12,12 +12,10 @@ export default {
     // data should be validated before reaching this point
     // factory controller will handle the error throwing in database or createUser function
     const id = checkParams(req.params.id);
-    // const { cacheKey } = req.body;
 
     const user = await UserModel.getUserInfos(id);
-    console.log(user);
 
-    // await Cache.set(cacheKey, user);
+    await Cache.set(`user${id}`, user);
 
     return res.status(200).json({ message: 'User informations', data: user });
   },
