@@ -19,6 +19,9 @@ const {
 } = userController;
 
 router.route('/:id')
+  // PERFORMANCES (cold start not included) :
+  // without cache : 52 to 73 ms
+  // with cache : 17 to 24 ms
   .get(getCache('user'), factory(getUser))
   .delete(validateUser, factory(deleteUser));
 

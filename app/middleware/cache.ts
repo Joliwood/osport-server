@@ -10,14 +10,13 @@ export default (key: string) => async (req: Request, res: Response, next: NextFu
 
   try {
     const cacheValue = await CacheService.get(paramsKey);
-    console.log(cacheValue);
 
     // Attach the cache key to 'req.body'
     // req.body.cacheKey = paramsKey;
 
-    // if (req.method === 'GET' && cacheValue) {
-    //   return res.status(200).json({ message: 'cached data', data: cacheValue });
-    // }
+    if (cacheValue) {
+      return res.status(200).json({ message: 'cached data', data: cacheValue });
+    }
 
     // If not cached or not a GET request, continue to the next middleware
     return next();

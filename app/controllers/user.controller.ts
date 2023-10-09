@@ -4,7 +4,7 @@ import Image from '../models/image.js';
 import { deleteImageFromServer, saveImageOnServer } from '../service/image.js';
 import checkParams from '../utils/checkParams.js';
 import logger from '../helpers/logger.js';
-import Cache from '../service/cache.js';
+import CacheService from '../service/cache.js';
 
 export default {
 
@@ -15,10 +15,11 @@ export default {
 
     const user = await UserModel.getUserInfos(id);
 
-    await Cache.set(`user${id}`, user);
+    await CacheService.userSet(`user${id}`, user);
 
     return res.status(200).json({ message: 'User informations', data: user });
   },
+
   updateImage: async (req: Request, res: Response) => {
     const { id } = req.body; //  form-data so id is a string
     if (!req.file) return res.status(200).json({ error: 'No image provided' });
