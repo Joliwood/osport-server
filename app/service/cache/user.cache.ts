@@ -1,21 +1,10 @@
-import { Redis } from 'ioredis';
+import redis from './redisConnection.js';
 
-const redis = new Redis({
-  port: Number(process.env.REDIS_PORT), // Redis port
-  host: process.env.REDIS_HOST, // Redis host
-  username: process.env.REDIS_USER, // needs Redis >= 6
-  password: process.env.REDIS_PASSWORD,
-  db: Number(process.env.REDIS_DB), // Defaults to 0
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
-export default class CacheService {
+export default class UserCacheService {
   static DEFAULT_EXPIRATION = 300; // 5 minutes
 
   // key === user with the userId attached
-  static async get(key: string) {
+  static async getUser(key: string) {
     // We want to receive all fields of the hash === user redis object like
     const user = await redis.hgetall(key);
 
@@ -32,11 +21,19 @@ export default class CacheService {
     return formatedUser;
   }
 
-  static async userSet(key: string, data: any) {
+  static async setUser(key: string, data: any) {
     // Create a hash to stock the user object
     await redis.hset(key, data);
 
     // Set the TTL (expiration) for the hash key
     await redis.expire(key, this.DEFAULT_EXPIRATION);
+  }
+
+  static async deleteUser(key: string) {
+    await redis.del(key);
+  }
+
+  static async updateUser(key: string, data: any) {
+    await redis.hset(key, data);
   }
 }

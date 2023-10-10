@@ -18,7 +18,10 @@ const {
 
 // Return all sports rating of the user (globalaly calculated)
 router.route('/sport/:id')
-  .get(/* getCache('sport'), */ factory(getSports));
+  // PERFORMANCES (cold start not included) :
+  // without cache : 35 to 72 ms
+  // with cache : -- to -- ms
+  .get(/* getCache('sport'), */factory(getSports));
 
 // Only at the end of the event, user rate an other one
 router.route('/sport')

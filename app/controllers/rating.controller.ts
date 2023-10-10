@@ -67,6 +67,7 @@ export default {
     // const { cacheKey } = req.body;
 
     const sports = await UserOnSport.getRatings(id);
+    console.log(sports);
 
     // await Cache.set(cacheKey, sports);
 

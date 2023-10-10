@@ -4,7 +4,7 @@ import Image from '../models/image.js';
 import { deleteImageFromServer, saveImageOnServer } from '../service/image.js';
 import checkParams from '../utils/checkParams.js';
 import logger from '../helpers/logger.js';
-import CacheService from '../service/cache.js';
+import UserCacheService from '../service/cache/user.cache.js';
 
 export default {
 
@@ -15,7 +15,7 @@ export default {
 
     const user = await UserModel.getUserInfos(id);
 
-    await CacheService.userSet(`user${id}`, user);
+    await UserCacheService.setUser(`user:${id}`, user);
 
     return res.status(200).json({ message: 'User informations', data: user });
   },
@@ -50,7 +50,7 @@ export default {
 
     const isUpdated = await UserModel.updateUser(Number(id), { imageUrl: imageStored.url });
 
-    // await Cache.del([`user${id}`]);
+    await UserCacheService.deleteUser(`user:${id}`);
 
     return res.status(200).json({ message: 'User has been updated', data: isUpdated, error });
   },
@@ -60,7 +60,7 @@ export default {
 
     await UserModel.deleteUser(id);
 
-    // await Cache.del([`user${id}`]);
+    await UserCacheService.deleteUser(`user:${id}`);
 
     return res.status(200).json({ message: 'User has been deleted' });
   },
@@ -69,8 +69,9 @@ export default {
     const { userId, ...data } = req.body;
 
     const user = await UserModel.updateUser(userId, data);
+    console.log(userId);
 
-    // await Cache.del([`user${userId}`]);
+    await UserCacheService.updateUser(`user:${userId}`, data);
 
     return res.status(200).json({ message: 'User has been updated', data: user });
   },
