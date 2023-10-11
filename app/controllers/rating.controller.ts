@@ -18,8 +18,6 @@ export default {
       user_id, sport_id, rating, rater_id, event_id,
     });
 
-    // await Cache.del([`sport${user_id}`, `own_rating${user_id}`]);
-
     res.status(201).json({ message: 'Sport rated' });
   },
 
@@ -30,7 +28,7 @@ export default {
 
     await UserOnSport.addOwnSportRating(user_id, sport_id, rating);
 
-    // await Cache.del([`sport${user_id}`, `own_rating${user_id}`]);
+    await RatingCacheService.delOwnRating(`own_rating:${user_id}`);
 
     res.status(201).json({ message: 'Sport rated' });
   },

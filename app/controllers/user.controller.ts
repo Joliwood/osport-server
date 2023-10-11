@@ -69,7 +69,6 @@ export default {
     const { userId, ...data } = req.body;
 
     const user = await UserModel.updateUser(userId, data);
-    console.log(userId);
 
     await UserCacheService.updateUser(`user:${userId}`, data);
 
