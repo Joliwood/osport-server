@@ -1,6 +1,6 @@
 import redis from './redisConnection.js';
 
-export default class CacheService {
+export default class RatingCacheService {
   static DEFAULT_EXPIRATION = 300; // 5 minutes
 
   // We could stock only in string redis type the rating for each sport

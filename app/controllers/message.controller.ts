@@ -26,8 +26,6 @@ export default {
       message,
     } = req.body;
 
-    console.log(id, message);
-
     await Message.update(id, message);
 
     res.status(204).json({ message: 'Message updated successfully' });
