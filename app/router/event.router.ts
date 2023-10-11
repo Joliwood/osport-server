@@ -25,7 +25,7 @@ router.route('/')
   .patch(validateUser, validateSchema(updateEventSchema, canals.body), factory(updateEvent));
 
 router.route('/details/:id')
-  .get(factory(getEventDetails));
+  .get(/* getCache('event'), */ factory(getEventDetails));
 
 router.route('/validate')
   .patch(validateSchema(validateEventSchema, canals.body), factory(validateEvent));
@@ -34,6 +34,6 @@ router.route('/results')
   .patch(validateSchema(updateEventSchema, canals.body), factory(resultsEvent));
 
 router.route('/:id')
-  .get(/* getCache('event'), */ factory(getEvents));
+  .get(factory(getEvents));
 
 export default router;

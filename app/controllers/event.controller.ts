@@ -125,6 +125,7 @@ export default {
     if (events && events.length === 0) {
       return res.status(200).json({ message: 'The player isn\'t in any event yet', data: events });
     }
+
     // await Cache.set(cacheKey, events);
 
     return res.status(200).json({ message: 'Events found', data: events });
