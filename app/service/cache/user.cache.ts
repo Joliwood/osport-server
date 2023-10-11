@@ -35,5 +35,6 @@ export default class UserCacheService {
 
   static async updateUser(key: string, data: any) {
     await redis.hset(key, data);
+    await redis.expire(key, this.DEFAULT_EXPIRATION);
   }
 }

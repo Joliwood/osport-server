@@ -65,7 +65,6 @@ const transports = [
     maxFiles: 5,
     level: 'http',
     format,
-
   }),
 ];
 

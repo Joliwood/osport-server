@@ -50,7 +50,7 @@ export default {
 
     const isUpdated = await UserModel.updateUser(Number(id), { imageUrl: imageStored.url });
 
-    await UserCacheService.deleteUser(`user:${id}`);
+    await UserCacheService.updateUser(`user:${id}`, isUpdated);
 
     return res.status(200).json({ message: 'User has been updated', data: isUpdated, error });
   },
