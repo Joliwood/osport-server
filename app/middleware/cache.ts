@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import logger from '../helpers/logger.js';
 import UserCacheService from '../service/cache/user.cache.js';
-// import RatingCacheService from '../service/cache/rating.cache.js';
+import RatingCacheService from '../service/cache/rating.cache.js';
 
-export default (key: string) => async (req: Request, res: Response, next: NextFunction) => {
+const getCache = (key: string) => async (req: Request, res: Response, next: NextFunction) => {
   // If 'key' is falsy, simply move to the next middleware
   if (!key) return next();
 
@@ -11,10 +11,14 @@ export default (key: string) => async (req: Request, res: Response, next: NextFu
 
   try {
     if (key === 'user') {
-      const cacheValue = await UserCacheService.getUser(paramsKey);
+      const cacheValue = await UserCacheService.getUser(paramsKey, res);
       if (cacheValue) return res.status(200).json({ message: 'User cache data', data: cacheValue });
     }
-    // if (key === 'rating') cacheValue = await RatingCacheService.getRating(paramsKey);
+
+    if (key === 'own_rating') {
+      const cacheValue = await RatingCacheService.getOwnRating(paramsKey, res);
+      if (cacheValue) return res.status(200).json({ message: 'Own user rating cache data', data: cacheValue });
+    }
 
     // If not cached or not a GET request, continue to the next middleware
     return next();
@@ -23,3 +27,5 @@ export default (key: string) => async (req: Request, res: Response, next: NextFu
     return next();
   }
 };
+
+export default getCache;
