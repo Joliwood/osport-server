@@ -4,13 +4,14 @@ import 'winston-daily-rotate-file';
 
 const { createLogger } = winston;
 
-// colors is nice
 const levels = {
   error: 0,
   warn: 1,
   info: 2,
   http: 3,
   debug: 4,
+  redis: 5,
+  silly: 6,
 };
 
 const level = () => {
@@ -19,13 +20,14 @@ const level = () => {
   return isDevelopment ? 'debug' : 'warn';
 };
 
-// colors is still nice
 const colors = {
   error: 'red',
   warn: 'yellow',
   info: 'blue',
   http: 'magenta',
   debug: 'white',
+  redis: 'cyan',
+  silly: 'green',
 };
 
 winston.addColors(colors);
@@ -65,7 +67,15 @@ const transports = [
     maxFiles: 5,
     level: 'http',
     format,
-
+  }),
+  new winston.transports.DailyRotateFile({
+    filename: 'logs/access-%DATE%.log',
+    datePattern: 'YYYY-MM-DD',
+    zippedArchive: true,
+    frequency: '24h',
+    maxFiles: 5,
+    level: 'redis',
+    format,
   }),
 ];
 

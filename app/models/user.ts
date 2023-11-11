@@ -86,7 +86,6 @@ export default {
         username: result.username,
         email: result.email,
         image_url: result.image_url,
-        created_at: result.created_at,
       };
     } catch (error: any) {
       throw new DatabaseError(error.message, 'user', error);

@@ -5,7 +5,7 @@ import validateSchema from '../middleware/schemas.validator.js';
 import createEventSchema from '../schemas/event/createEvent.js';
 import { updateEventSchema } from '../schemas/event/updateEvent.js';
 import { validateEventSchema } from '../schemas/event/validateEvent.js';
-// import getCache from '../middleware/cache.js';
+import getCache from '../middleware/cache.js';
 import canals from '../helpers/canals.js';
 import validateUser from '../middleware/validate.user.js';
 
@@ -25,7 +25,10 @@ router.route('/')
   .patch(validateUser, validateSchema(updateEventSchema, canals.body), factory(updateEvent));
 
 router.route('/details/:id')
-  .get(factory(getEventDetails));
+  // PERFORMANCES (cold start not included) :
+  // without cache : 36 to 92 ms
+  // with cache : 35 to 72 ms
+  .get(getCache('event'), factory(getEventDetails));
 
 router.route('/validate')
   .patch(validateSchema(validateEventSchema, canals.body), factory(validateEvent));
@@ -34,6 +37,6 @@ router.route('/results')
   .patch(validateSchema(updateEventSchema, canals.body), factory(resultsEvent));
 
 router.route('/:id')
-  .get(/* getCache('event'), */ factory(getEvents));
+  .get(factory(getEvents));
 
 export default router;

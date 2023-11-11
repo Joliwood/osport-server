@@ -6,7 +6,7 @@ import validateUser from '../middleware/validate.user.js';
 import updateUserSchema from '../schemas/user/updateUser.js';
 import validateSchema from '../middleware/schemas.validator.js';
 import canals from '../helpers/canals.js';
-// import getCache from '../middleware/cache.js';
+import getCache from '../middleware/cache.js';
 
 const router: Router = express.Router();
 
@@ -19,7 +19,10 @@ const {
 } = userController;
 
 router.route('/:id')
-  .get(/* getCache('user'), */ factory(getUser))
+  // PERFORMANCES (cold start not included) :
+  // without cache : 52 to 73 ms
+  // with cache : 17 to 24 ms
+  .get(getCache('user'), factory(getUser))
   .delete(validateUser, factory(deleteUser));
 
 router.route('/')
