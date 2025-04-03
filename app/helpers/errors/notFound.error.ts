@@ -9,7 +9,7 @@ export default class NotFoundError extends Error {
     super(message);
     this.message = message;
     this.status = 200;
-    this.userMessage = "Item(s) couldn't be found";
+    this.userMessage = 'Item(s) couldn\'t be found';
     this.name = 'NotFoundError';
   }
 }

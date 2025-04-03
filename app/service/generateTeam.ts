@@ -1,10 +1,7 @@
 import type { Player, TeamGeneratorConfig } from '../@types/index.js';
 import UserOnSport from '../models/user_on_sport.js';
 import prisma from '../helpers/db.client.js';
-// import Cache from './cache.js';
-
-/* eslint-disable */
-
+ 
 export async function generateBalancedTeam(event_id: number) {
 
   const event = await prisma.event.findUnique({
@@ -163,4 +160,4 @@ export function getTeamValue(array_team: Player[]): number {
   }).reduce((a, b) => a + b) : 0;
 }
 
-/* eslint-enable */
+ 

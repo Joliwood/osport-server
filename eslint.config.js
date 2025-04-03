@@ -1,31 +1,37 @@
-import { defineConfig } from "eslint-define-config";
-import tseslint from "typescript-eslint";
+import { defineConfig } from 'eslint-define-config';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig({
-  languageOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    parser: tseslint.parser,
-    parserOptions: {
-      project: "./tsconfig.json",
+export default defineConfig([
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+    },
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/indent': 'off',
+      'import/extensions': 'off',
+      quotes: ['error', 'single'],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'variable',
+          format: ['PascalCase', 'camelCase', 'UPPER_CASE', 'snake_case'],
+        },
+      ],
+      'no-underscore-dangle': ['error', { allow: ['_avg', '_count'] }],
     },
   },
-  plugins: {
-    "@typescript-eslint": tseslint.plugin,
+  {
+    files: ['*.js', '*.jsx', '*.cjs', '*.mjs'],
+    rules: {
+      quotes: ['error', 'single'],
+    },
   },
-  rules: {
-    "no-console": "off",
-    "@typescript-eslint/indent": "off",
-    "import/extensions": "off",
-    quotes: ["error", "single"],
-    // Correction de la règle naming-convention
-    "@typescript-eslint/naming-convention": [
-      "error",
-      {
-        selector: "variable",
-        format: ["PascalCase", "camelCase", "UPPER_CASE", "snake_case"],
-      },
-    ],
-    "no-underscore-dangle": ["error", { allow: ["_avg", "_count"] }],
-  },
-});
+]);

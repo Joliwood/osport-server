@@ -58,7 +58,7 @@ export default {
       friend = await User.findOne({ username, email });
     } catch (error) {
       logger.error(error);
-      res.status(200).json({ error: "Friend doesn't exist" });
+      res.status(200).json({ error: 'Friend doesn\'t exist' });
     }
 
     await Friends.create({ asker_id: userId, asked_id: friend.id });

@@ -12,7 +12,7 @@ export async function createUser(data: RegisterForm): Promise<boolean> {
 
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds).catch((err: any) => {
-      if (err) throw new ServerError("Couldn't hash user password");
+      if (err) throw new ServerError('Couldn\'t hash user password');
     });
 
     if (!hashedPassword) throw new ServerError('hash password is missing');
@@ -45,7 +45,7 @@ export async function login(data: LoginForm):
 
   const passwordMatch = await bcrypt.compare(trimedPassword, user.password);
 
-  if (!passwordMatch) throw new UserInputError("Password didn't match", 'wrong credentials');
+  if (!passwordMatch) throw new UserInputError('Password didn\'t match', 'wrong credentials');
 
   const accessToken = createAccesToken(
     expireTimeAccess,

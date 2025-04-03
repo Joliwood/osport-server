@@ -27,7 +27,7 @@ export default class DatabaseError extends Error {
       }
       if (error.code === 'P2003') {
         this.message = error.message;
-        this.userMessage = "You're likely trying to delete something that doesn't exist";
+        this.userMessage = 'You\'re likely trying to delete something that doesn\'t exist';
       }
       if (error.code === 'P2025') {
         this.message = (error as any).meta.cause;
