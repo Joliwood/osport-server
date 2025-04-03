@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: osport_server_pg_db
+    restart: always
+    environment:
+      POSTGRES_USER: OSPORT_ADMIN_USER
+      POSTGRES_PASSWORD: OSPORT_ADMIN_PASSWORD
+      POSTGRES_DB: osport_db
+    ports:
+      - "5150:5432" # Remplace XXXX par le port souhaité sur ta machine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "OSPORT_ADMIN_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:6
+    container_name: my_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
